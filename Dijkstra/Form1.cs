@@ -14,9 +14,11 @@ namespace Dijkstra
     {
         Graphics g;
         bool buttonclicked = false;
-        int numerator = 65,digit = 1;
+        int numerator = 65, digit = 1;
         List<Rectangle> vertex = new List<Rectangle>();
         List<Line> edges = new List<Line>();
+        List<List<int>> weights = new List<List<int>>();
+        List<int> usedvertex = new List<int>();
         public Form1()
         {
             InitializeComponent();
@@ -55,7 +57,7 @@ namespace Dijkstra
                 vertex.Add(r);
                 myPen.Dispose();
             }
-            if(buttonclicked && radioButton2.Checked == true)
+            if (buttonclicked && radioButton2.Checked == true)
             {
                 Pen myPen = new Pen(Brushes.Black);
                 myPen.Width = 2.0F;
@@ -82,7 +84,7 @@ namespace Dijkstra
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Pen myPen = new Pen(Color.Black,15);
+            Pen myPen = new Pen(Color.Black, 15);
             myPen.Width = 1.0F;
             Point start, endp;
             if (radioButton2.Checked)
@@ -99,7 +101,7 @@ namespace Dijkstra
             }
             else
             {
-                char head  = textBox1.Text[0];
+                char head = textBox1.Text[0];
                 char end = textBox2.Text[0];
                 start = new Point(vertex[head - 65].X + 25, vertex[head - 65].Y + 25);
                 endp = new Point(vertex[end - 65].X + 25, vertex[end - 65].Y + 25);
@@ -128,7 +130,7 @@ namespace Dijkstra
                     digit++;
                 }
             }
-            if(radioButton1.Checked)
+            if (radioButton1.Checked)
             {
                 foreach (Rectangle rec in vertex)
                 {
@@ -144,37 +146,75 @@ namespace Dijkstra
 
         private void button1_Click(object sender, EventArgs e)
         {
-            GetDijkstra(textBox5.Text,textBox6.Text);
+            GetDijkstra(textBox5.Text, textBox6.Text);
         }
         private void GetDijkstra(string p1, string p2)
-        {           
-            List<List<string>> weights = new List<List<string>>();
-            richTextBox1.Text += "       D[2]  D[3]  D[4]\n";
-            richTextBox1.Text += "1      ";
-            for (int j = 1; j < vertex.Count + 1; j++)
+        {
+            usedvertex.Add(1);
+            printStart();
+            SetStartValues();
+            DisplayWeights(0);
+            for (int j = 1; j < vertex.Count-1; j++)
             {
-                weights.Add(new List<string>());
+                int minvertex = GetMinimalVertex();
+                usedvertex.Add(minvertex);
+                weights.Add(new List<int>());
                 for (int i = 2; i < vertex.Count + 1; i++)
                 {
-                    Line tmp = edges.FirstOrDefault(value => value.p1 == p1 && value.p2 == i.ToString());
-                    if (tmp != null)
+                    if (i == minvertex || usedvertex.Contains(i) == true) weights[weights.Count - 1].Add(-1);
+                    else
                     {
-                        weights[j-1].Add(tmp.weight);
-                        richTextBox1.Text += tmp.weight + new string(' ', 6);
+                        Line tmp = edges.FirstOrDefault(value => (value.p1 == minvertex.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == minvertex.ToString()));
+                        if (tmp != null)
+                        {
+                            weights[weights.Count - 1].Add(Math.Min(weights[weights.Count - 2][i - 2], (weights[weights.Count - 2][minvertex - 2] + Convert.ToInt32(tmp.weight))));
+                        }
+                        else
+                        if (weights[weights.Count - 2][i-2] != 100)
+                            weights[weights.Count - 1].Add(weights[weights.Count - 2][i-2]);
+                        else weights[weights.Count - 1].Add(100);
                     }
-                    else richTextBox1.Text += 0.ToString() + new string(' ', 6);
                 }
-                int minimum = (from tmp in weights[j-1] select Convert.ToInt32(tmp)).Min();
-                p1 = (weights[j-1].IndexOf(minimum.ToString())+2).ToString();
-                richTextBox1.Text += $"\n{p1}      ";
+                DisplayWeights(j);
             }
-            //
-            for (int i = 0; i < weights.Count; i++)
+            richTextBox1.Text+= $"\nThe shortest way from {p1} to {p2} is {getShortestDistance((p2))}";
+        }
+        private int getShortestDistance(string p2)
+        {
+            List<int> values = new List<int>();
+            for (int i = 0; i < weights.Count; i++) values.Add(weights[i][Convert.ToInt32(p2) - 2]);
+            return (from tmp in values where tmp > 0 select tmp).Min();
+        }
+        private void printStart()
+        {
+            richTextBox1.Text += new string(' ', 10);
+            for (int i = 1; i < vertex.Count; i++)
+                richTextBox1.Text += $"D[{i+1}]" + new string(' ',10);
+            richTextBox1.Text += "\n1"+new string(' ',10);
+        }
+        private void SetStartValues()
+        {
+            weights.Add(new List<int>());
+            for (int i = 2; i < vertex.Count + 1; i++)
             {
-                for (int j = 0; j < weights[i].Count; j++)
-                    richTextBox1.Text += weights[i][j] + " ";
-                richTextBox1.Text += '\n';
+                Line tmp = edges.FirstOrDefault(value => (value.p1 == 1.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == 1.ToString()));
+                if (tmp != null) weights[0].Add(Convert.ToInt32(tmp.weight));
+                else weights[0].Add(Convert.ToInt32(100));
             }
+        }
+        private void DisplayWeights(int i)
+        {
+            for (int j = 0; j < weights[i].Count; j++)
+            {
+                richTextBox1.Text += weights[i][j] + new string(' ', 15);
+            }
+        }
+        private int GetMinimalVertex()
+        {
+            int value = (from tmp in weights[weights.Count - 1] where tmp>0 select tmp).Min();
+            int vertex = weights[weights.Count - 1].IndexOf(value);
+            richTextBox1.Text += $"\n{vertex + 2}" + new string(' ', 10);
+            return vertex + 2;
         }
         private void drawEdges(Graphics g)
         {
@@ -190,19 +230,10 @@ namespace Dijkstra
     }
 }
 
-                        //if (j==1)
-                        //{
-                        //    if ((edge.p1 == p1 && edge.p2 == i.ToString()) || (edge.p1 == i.ToString() && edge.p2 == p1))
-                        //    {
-                        //        weights[j - 1].Add(edge.weight);
-                        //        break;
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    if ((edge.p1 == p1.ToString() && edge.p2 == i.ToString()) || (edge.p2 == p1.ToString() && edge.p1 == i.ToString()))
-                        //    {
-                        //        weights[j - 1].Add(edge.weight);
-                        //        break;
-                        //    }
-                        //}
+//
+//for (int i = 0; i < weights.Count; i++)
+//{
+//    for (int j = 0; j < weights[i].Count; j++)
+//        richTextBox1.Text += weights[i][j] + " ";
+//    richTextBox1.Text += '\n';
+//}
