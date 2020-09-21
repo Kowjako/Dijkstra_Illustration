@@ -62,7 +62,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(23, 63);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(634, 328);
+            this.groupBox1.Size = new System.Drawing.Size(640, 501);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Canvas";
@@ -71,7 +71,7 @@
             // 
             this.panel1.Location = new System.Drawing.Point(6, 15);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(622, 303);
+            this.panel1.Size = new System.Drawing.Size(628, 480);
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
@@ -83,7 +83,7 @@
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Location = new System.Drawing.Point(663, 63);
+            this.groupBox3.Location = new System.Drawing.Point(672, 63);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(186, 131);
             this.groupBox3.TabIndex = 2;
@@ -143,9 +143,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(663, 360);
+            this.button1.Location = new System.Drawing.Point(864, 172);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(186, 31);
+            this.button1.Size = new System.Drawing.Size(186, 76);
             this.button1.TabIndex = 3;
             this.button1.TabStop = false;
             this.button1.Text = "Start Dijkstra algorithm";
@@ -154,7 +154,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(663, 291);
+            this.button2.Location = new System.Drawing.Point(864, 105);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(186, 31);
             this.button2.TabIndex = 4;
@@ -165,7 +165,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(663, 254);
+            this.button3.Location = new System.Drawing.Point(864, 68);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(186, 31);
             this.button3.TabIndex = 5;
@@ -180,7 +180,7 @@
             this.groupBox2.Controls.Add(this.radioButton1);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(663, 200);
+            this.groupBox2.Location = new System.Drawing.Point(672, 200);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(186, 48);
             this.groupBox2.TabIndex = 6;
@@ -229,7 +229,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(663, 335);
+            this.label5.Location = new System.Drawing.Point(864, 149);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 7;
@@ -238,7 +238,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(765, 335);
+            this.label6.Location = new System.Drawing.Point(966, 149);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
             this.label6.TabIndex = 8;
@@ -246,7 +246,7 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(725, 332);
+            this.textBox5.Location = new System.Drawing.Point(926, 146);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(34, 20);
             this.textBox5.TabIndex = 6;
@@ -254,7 +254,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(817, 332);
+            this.textBox6.Location = new System.Drawing.Point(1018, 146);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(32, 20);
             this.textBox6.TabIndex = 9;
@@ -262,10 +262,10 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 15);
+            this.richTextBox1.Location = new System.Drawing.Point(6, 16);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(366, 307);
+            this.richTextBox1.Size = new System.Drawing.Size(369, 288);
             this.richTextBox1.TabIndex = 10;
             this.richTextBox1.TabStop = false;
             this.richTextBox1.Text = "";
@@ -273,9 +273,9 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.richTextBox1);
-            this.groupBox4.Location = new System.Drawing.Point(855, 63);
+            this.groupBox4.Location = new System.Drawing.Point(672, 254);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(378, 328);
+            this.groupBox4.Size = new System.Drawing.Size(381, 310);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Output";
@@ -284,7 +284,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1243, 402);
+            this.ClientSize = new System.Drawing.Size(1059, 574);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.textBox5);

@@ -146,7 +146,11 @@ namespace Dijkstra
 
         private void button1_Click(object sender, EventArgs e)
         {
-            GetDijkstra(textBox5.Text, textBox6.Text);
+            if(radioButton1.Checked==true)
+            {
+                GetDijkstra("1", (textBox6.Text[0] - 64).ToString());
+            }
+            else GetDijkstra(textBox5.Text, textBox6.Text);
         }
         private void GetDijkstra(string p1, string p2)
         {
@@ -164,7 +168,13 @@ namespace Dijkstra
                     if (i == minvertex || usedvertex.Contains(i) == true) weights[weights.Count - 1].Add(-1);
                     else
                     {
-                        Line tmp = edges.FirstOrDefault(value => (value.p1 == minvertex.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == minvertex.ToString()));
+                        Line tmp = null;
+                        if (radioButton1.Checked == true)
+                        {
+                            tmp = edges.FirstOrDefault(value => (value.p1[0] == (char)(minvertex+64) && value.p2[0] == (char)(i+64)) || (value.p1[0] == (char)(i + 64) && value.p2[0] == (char)(minvertex + 64)));
+                        }
+                        else
+                            tmp = edges.FirstOrDefault(value => (value.p1 == minvertex.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == minvertex.ToString()));
                         if (tmp != null)
                         {
                             weights[weights.Count - 1].Add(Math.Min(weights[weights.Count - 2][i - 2], (weights[weights.Count - 2][minvertex - 2] + Convert.ToInt32(tmp.weight))));
@@ -177,7 +187,12 @@ namespace Dijkstra
                 }
                 DisplayWeights(j);
             }
-            richTextBox1.Text+= $"\nThe shortest way from {p1} to {p2} is {getShortestDistance((p2))}";
+            if (radioButton1.Checked == true)
+            {
+                richTextBox1.Text += $"\nThe shortest way from {(char)(Convert.ToInt32(p1)+64)} to {(char)(Convert.ToInt32(p2) + 64)} is {getShortestDistance((p2))}";
+            }
+            else
+                richTextBox1.Text+= $"\nThe shortest way from {p1} to {p2} is {getShortestDistance((p2))}";
         }
         private int getShortestDistance(string p2)
         {
@@ -187,17 +202,33 @@ namespace Dijkstra
         }
         private void printStart()
         {
-            richTextBox1.Text += new string(' ', 10);
-            for (int i = 1; i < vertex.Count; i++)
-                richTextBox1.Text += $"D[{i+1}]" + new string(' ',10);
-            richTextBox1.Text += "\n1"+new string(' ',10);
+            if (radioButton1.Checked == true)
+            {
+                richTextBox1.Text += "\t";
+                for (char i = (char)65; i < (char)vertex.Count+64; i++)
+                    richTextBox1.Text += $"D[{(char)(i+1)}]" + "\t";
+                richTextBox1.Text += "\nA" + "\t";
+            }
+            else
+            {
+                richTextBox1.Text += "\t";
+                for (int i = 1; i < vertex.Count; i++)
+                    richTextBox1.Text += $"D[{i + 1}]" + "\t";
+                richTextBox1.Text += "\n1" + "\t";
+            }
         }
         private void SetStartValues()
         {
             weights.Add(new List<int>());
             for (int i = 2; i < vertex.Count + 1; i++)
             {
-                Line tmp = edges.FirstOrDefault(value => (value.p1 == 1.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == 1.ToString()));
+                Line tmp = null;
+                if (radioButton1.Checked == true)
+                {
+                    tmp = edges.FirstOrDefault(value => (value.p1[0] == 'A' && value.p2[0] == (char)(i+64)) || (value.p1[0] == (char)(i + 64) && value.p2[0] == 'A'));
+                }
+                else
+                    tmp = edges.FirstOrDefault(value => (value.p1 == 1.ToString() && value.p2 == i.ToString()) || (value.p1 == i.ToString() && value.p2 == 1.ToString()));
                 if (tmp != null) weights[0].Add(Convert.ToInt32(tmp.weight));
                 else weights[0].Add(Convert.ToInt32(100));
             }
@@ -206,16 +237,21 @@ namespace Dijkstra
         {
             for (int j = 0; j < weights[i].Count; j++)
             {
-                richTextBox1.Text += weights[i][j] + new string(' ', 15);
+                richTextBox1.Text += weights[i][j] + "\t";
             }
         }
         private int GetMinimalVertex()
         {
             int value = (from tmp in weights[weights.Count - 1] where tmp>0 select tmp).Min();
             int vertex = weights[weights.Count - 1].IndexOf(value);
-            richTextBox1.Text += $"\n{vertex + 2}" + new string(' ', 10);
+            if (radioButton1.Checked == true)
+                richTextBox1.Text += $"\n{(char)(vertex + 66)}" + "\t";
+            else
+                richTextBox1.Text += $"\n{vertex + 2}" + "\t";
             return vertex + 2;
         }
+
+
         private void drawEdges(Graphics g)
         {
             Pen myPen = new Pen(Color.Black, 15);
@@ -229,11 +265,3 @@ namespace Dijkstra
         }
     }
 }
-
-//
-//for (int i = 0; i < weights.Count; i++)
-//{
-//    for (int j = 0; j < weights[i].Count; j++)
-//        richTextBox1.Text += weights[i][j] + " ";
-//    richTextBox1.Text += '\n';
-//}
